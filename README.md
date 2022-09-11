@@ -59,7 +59,7 @@ repositories {
 implementation group: 'org.example', name: 'spring-autoconfig-example', version: '1.0-SNAPSHOT'
 ```
 
-# SpringSimpleBean
+# Spring simple bean creation
 The bean **SpringSimpleBean** 
 ```java
 
@@ -74,7 +74,7 @@ public class SpringSimpleBean {
 ```
 
 There are cases the bean will be loaded into the library user project.\
-**See git tag: stage/01-version1**
+**[ See git tag: stage/01-version1 ]**
 
 ### 1. If component scan is defined
 ```java
@@ -92,6 +92,50 @@ public class Main {
 public class Main {
     @Autowired
     SpringSimpleBean springSimpleBean;
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class);
+    }
+}
+```
+
+# Spring auto configuration bean creation
+**[ See tag: stage/02-custom-enable-annotation ]** \
+General @EnableXXXX annotation bean configuration approach is achieved by below step
+1. Remove the @Component annotation on target classes 
+    ```java
+    public class SpringSimpleBean {
+        @PostConstruct
+        public void init(){
+            System.out.printf("[%s] created%n", SpringSimpleBean.class.getSimpleName());
+        }
+    }
+    ```
+2. Create Configuration class
+    ```java
+    public class EnableSpringSimpleBeanConfig {
+        @Bean
+        public SpringSimpleBean springSimpleBean(){
+            return new SpringSimpleBean();
+        }
+    }
+    ```
+3. Create @EnableXXXX annotation \
+   The key point is add the **EnableSpringSimpleBeanConfig** into @Import annotation. \
+   So that when the library user include the @EnableSpringSimpleBean in their spring boot application. \
+   The bean configuration in the class **EnableSpringSimpleBeanConfig** is created when load. 
+    ```java
+    @Retention(RUNTIME)
+    @Target(TYPE)
+    @Import(EnableSpringSimpleBeanConfig.class)
+    public @interface EnableSpringSimpleBean {
+    }
+    ```
+4. Include the @EnableXXXX in library user project
+```java
+// This is the library user project, not the spring-autoconfig-example
+@SpringBootApplication
+@EnableSpringSimpleBean 
+public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class);
     }

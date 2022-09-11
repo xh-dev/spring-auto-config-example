@@ -1,12 +1,15 @@
 package org.example.simple;
 
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 
-@Component
+/**
+ * Simple Spring Bean
+ */
 public class SpringSimpleBean {
 
+    /**
+     * init method after bean creation
+     */
     @PostConstruct
     public void init(){
         System.out.printf("[%s] created%n", SpringSimpleBean.class.getSimpleName());
