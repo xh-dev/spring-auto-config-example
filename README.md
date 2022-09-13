@@ -131,13 +131,13 @@ General @EnableXXXX annotation bean configuration approach is achieved by below 
     }
     ```
 4. Include the @EnableXXXX in library user project
-```java
-// This is the library user project, not the spring-autoconfig-example
-@SpringBootApplication
-@EnableSpringSimpleBean 
-public class Main {
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class);
-    }
-}
-```
+   ```java
+   // This is the library user project, not the spring-autoconfig-example
+   @SpringBootApplication
+   @EnableSpringSimpleBean 
+   public class Main {
+       public static void main(String[] args) {
+           SpringApplication.run(Main.class);
+       }
+   }
+   ```
